@@ -21,16 +21,24 @@ func main() {
 	if err != nil {
 		log.Fatalf("error creating telegram connection: %v\n", err)
 	}
-	tgLog("Hello", tgBot)
-}
 
-// tgLog - logs message to telegram chat
-func tgLog(msg string, tgBot *tgbotapi.BotAPI) {
 	tgChatId := os.Getenv("TELEGRAM_LOG_BOT_CHAT_ID")
 	tgChatIdInt, _ := strconv.ParseInt(tgChatId, 10, 64)
-	tgMsg := tgbotapi.NewMessage(tgChatIdInt, "Wa-Go-Bot: "+msg)
-	_, err := tgBot.Send(tgMsg)
-	if err != nil {
-		log.Fatalf("Send telegram error: %v\n", err)
+
+	// todo: handle channel
+	tgLogger := TgLogger{
+		tgBot:  tgBot,
+		chatId: tgChatIdInt,
+		levels: &LogLevels{
+			debug: "DEBUG:",
+			info:  "INFO:",
+			warn:  "WARN:",
+			error: "ERROR:",
+		},
 	}
+
+	tgLogger.debug("Hello!")
+	tgLogger.info("Hello!")
+	tgLogger.warn("Hello!")
+	tgLogger.error("Hello!")
 }
