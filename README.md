@@ -2,7 +2,7 @@
 
 ## TODO
 
-- [ ] Tests
+- [x] Tests
 - [ ] Readme
 - [ ] License
 - [ ] Publish package
