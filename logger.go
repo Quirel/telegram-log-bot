@@ -8,22 +8,22 @@ import (
 	"sync"
 )
 
-// LevelLabels specifies labels for different log levels
+// LevelLabels specifies labels for different log Labels
 type LevelLabels struct {
-	debug string
-	info  string
-	warn  string
-	error string
+	Debug string
+	Info  string
+	Warn  string
+	Error string
 }
 
 // TgLogger allows to send logs into chat with telegram bot
-// level - debug | info | warn | error
+// Level - Debug | Info | Warn | Error
 type TgLogger struct {
 	TgBot      *tgbotapi.BotAPI
-	chatIdList []int64
-	levels     *LevelLabels
-	name       string
-	level      string
+	ChatIdList []int64
+	Labels     *LevelLabels
+	Name       string
+	Level      string
 }
 
 // NewLogger creates new TgLogger
@@ -35,34 +35,38 @@ func NewLogger(level string, tgToken string, tgChatIds []int64) (*TgLogger, erro
 
 	return &TgLogger{
 		TgBot:      tgBot,
-		chatIdList: tgChatIds,
-		level:      level,
-		levels: &LevelLabels{
-			debug: "DEBUG:",
-			info:  "INFO:",
-			warn:  "WARN:",
-			error: "ERROR:",
+		ChatIdList: tgChatIds,
+		Level:      level,
+		Labels: &LevelLabels{
+			Debug: "DEBUG:",
+			Info:  "INFO:",
+			Warn:  "WARN:",
+			Error: "ERROR:",
 		},
 	}, nil
 }
 
-// SetName sets name for logger displayed in message
+// SetName sets Name for logger displayed in message
 func (logger *TgLogger) SetName(name string) {
-	logger.name = name
+	logger.Name = name
 }
 
-// Send sends message. Can return error
+func (logger *TgLogger) SetLabels(labels *LevelLabels) {
+	logger.Labels = labels
+}
+
+// Send sends message. Can return Error
 func (logger *TgLogger) Send(msg string, chatId int64) error {
 	var err error
-	if logger.name != "" {
-		msg = fmt.Sprintf("%v, %v", logger.name, msg)
+	if logger.Name != "" {
+		msg = fmt.Sprintf("%v, %v", logger.Name, msg)
 	}
 	tgMsg := tgbotapi.NewMessage(chatId, msg)
 	_, err = logger.TgBot.Send(tgMsg)
 	return err
 }
 
-// sendWithoutError sends message, suppressing error
+// sendWithoutError sends message, suppressing Error
 func (logger *TgLogger) sendWithoutError(msg string, chatId int64) {
 	_ = logger.Send(msg, chatId)
 }
@@ -70,7 +74,7 @@ func (logger *TgLogger) sendWithoutError(msg string, chatId int64) {
 // SendMultiple sends message to multiple chats
 func (logger *TgLogger) SendMultiple(msg string) {
 	var wg sync.WaitGroup
-	for _, id := range logger.chatIdList {
+	for _, id := range logger.ChatIdList {
 		wg.Add(1)
 		go func(msg string, id int64) {
 			defer wg.Done()
@@ -85,31 +89,31 @@ func (logger *TgLogger) Log(msg string) {
 	logger.SendMultiple(msg)
 }
 
-// Debug sends debug message, depends on log level
+// Debug sends Debug message, depends on log Level
 func (logger *TgLogger) Debug(msg string) {
-	if logger.level != "debug" {
+	if logger.Level != "Debug" {
 		return
 	}
-	logger.SendMultiple(fmt.Sprintf("%v\n%v", logger.levels.debug, msg))
+	logger.SendMultiple(fmt.Sprintf("%v\n%v", logger.Labels.Debug, msg))
 }
 
-// Info sends info message, depends on log level
+// Info sends Info message, depends on log Level
 func (logger *TgLogger) Info(msg string) {
-	if logger.level == "warn" || logger.level == "error" {
+	if logger.Level == "Warn" || logger.Level == "Error" {
 		return
 	}
-	logger.SendMultiple(fmt.Sprintf("%v\n%v", logger.levels.info, msg))
+	logger.SendMultiple(fmt.Sprintf("%v\n%v", logger.Labels.Info, msg))
 }
 
-// Warn sends warn message, depends on log level
+// Warn sends Warn message, depends on log Level
 func (logger *TgLogger) Warn(msg string) {
-	if logger.level == "error" {
+	if logger.Level == "Error" {
 		return
 	}
-	logger.SendMultiple(fmt.Sprintf("%v\n%v", logger.levels.warn, msg))
+	logger.SendMultiple(fmt.Sprintf("%v\n%v", logger.Labels.Warn, msg))
 }
 
-// Error sends error message
+// Error sends Error message
 func (logger *TgLogger) Error(msg string) {
-	logger.SendMultiple(fmt.Sprintf("%v\n%v", logger.levels.error, msg))
+	logger.SendMultiple(fmt.Sprintf("%v\n%v", logger.Labels.Error, msg))
 }
