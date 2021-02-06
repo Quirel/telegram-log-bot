@@ -1,4 +1,4 @@
-module github.com/Quirel/telegram-logger
+module github.com/quirel/telegram-logger
 
 go 1.15
 

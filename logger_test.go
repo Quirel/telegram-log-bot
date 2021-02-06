@@ -1,7 +1,7 @@
 package tglogger_test
 
 import (
-	tglog "github.com/Quirel/telegram-logger"
+	tglog "github.com/quirel/telegram-logger"
 	"os"
 	"strconv"
 	"testing"

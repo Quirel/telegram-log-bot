@@ -1,3 +1,5 @@
+// Package provides primitives for sending logs
+// into telegram chat
 package tglogger
 
 import (
@@ -14,7 +16,8 @@ type LevelLabels struct {
 	error string
 }
 
-// TgLogger allows to Send logs into chat with telegram bot
+// TgLogger allows to send logs into chat with telegram bot
+// level - debug | info | warn | error
 type TgLogger struct {
 	TgBot      *tgbotapi.BotAPI
 	chatIdList []int64
