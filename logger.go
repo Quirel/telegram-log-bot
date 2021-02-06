@@ -71,8 +71,8 @@ func (logger *TgLogger) sendWithoutError(msg string, chatId int64) {
 	_ = logger.Send(msg, chatId)
 }
 
-// SendMultiple sends message to multiple chats
-func (logger *TgLogger) SendMultiple(msg string) {
+// Log sends simple message
+func (logger *TgLogger) Log(msg string) {
 	var wg sync.WaitGroup
 	for _, id := range logger.ChatIdList {
 		wg.Add(1)
@@ -84,17 +84,12 @@ func (logger *TgLogger) SendMultiple(msg string) {
 	wg.Wait()
 }
 
-// Log sends simple message
-func (logger *TgLogger) Log(msg string) {
-	logger.SendMultiple(msg)
-}
-
 // Debug sends Debug message, depends on log Level
 func (logger *TgLogger) Debug(msg string) {
 	if logger.Level != "Debug" {
 		return
 	}
-	logger.SendMultiple(fmt.Sprintf("%v\n%v", logger.Labels.Debug, msg))
+	logger.Log(fmt.Sprintf("%v\n%v", logger.Labels.Debug, msg))
 }
 
 // Info sends Info message, depends on log Level
@@ -102,7 +97,7 @@ func (logger *TgLogger) Info(msg string) {
 	if logger.Level == "Warn" || logger.Level == "Error" {
 		return
 	}
-	logger.SendMultiple(fmt.Sprintf("%v\n%v", logger.Labels.Info, msg))
+	logger.Log(fmt.Sprintf("%v\n%v", logger.Labels.Info, msg))
 }
 
 // Warn sends Warn message, depends on log Level
@@ -110,10 +105,10 @@ func (logger *TgLogger) Warn(msg string) {
 	if logger.Level == "Error" {
 		return
 	}
-	logger.SendMultiple(fmt.Sprintf("%v\n%v", logger.Labels.Warn, msg))
+	logger.Log(fmt.Sprintf("%v\n%v", logger.Labels.Warn, msg))
 }
 
 // Error sends Error message
 func (logger *TgLogger) Error(msg string) {
-	logger.SendMultiple(fmt.Sprintf("%v\n%v", logger.Labels.Error, msg))
+	logger.Log(fmt.Sprintf("%v\n%v", logger.Labels.Error, msg))
 }
