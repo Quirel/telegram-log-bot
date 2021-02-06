@@ -23,7 +23,7 @@ func TestAssertEnv(t *testing.T) {
 }
 
 func TestNewLogger(t *testing.T) {
-	_, err := tglog.NewLogger("debug", TestToken, []int64{TestChatId})
+	_, err := tglog.NewLogger("Debug", TestToken, []int64{TestChatId})
 	if err != nil {
 		t.Error(err)
 		t.Fail()
@@ -31,10 +31,27 @@ func TestNewLogger(t *testing.T) {
 }
 
 func TestLog(t *testing.T) {
-	logger, _ := tglog.NewLogger("debug", TestToken, []int64{TestChatId})
+	logger, _ := tglog.NewLogger("Debug", TestToken, []int64{TestChatId})
 	err := logger.Send("TestSend", TestChatId)
 	if err != nil {
 		t.Error(err)
+		t.Fail()
+	}
+}
+
+func TestSetLabels(t *testing.T) {
+	labels := tglog.LevelLabels{
+		Debug: "dbg", Info: "inf", Warn: "wrn", Error: "err",
+	}
+	logger, _ := tglog.NewLogger("Debug", TestToken, []int64{TestChatId})
+
+	if logger.Labels.Debug != "DEBUG:" {
+		t.Error("Default Labels.Debug should be 'DEBUG:'")
+		t.Fail()
+	}
+	logger.SetLabels(&labels)
+	if logger.Labels.Debug != "dbg" {
+		t.Error("Labels.Debug should be set to 'dbg'")
 		t.Fail()
 	}
 }

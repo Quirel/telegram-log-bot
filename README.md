@@ -18,9 +18,16 @@ func main() {
 	// set name displayed in logs
 	logger.SetName("MyApp")
 	
-	logger.Debug("Debug message")
-	logger.Info("Debug message")
-	logger.Warn("Debug message")
-	logger.Error("Debug message")
+	logger.Debug("Debug message") // "MyApp, DEBUG:\nDebug message"
+	logger.Info("Info message") // "MyApp, INFO:\nInfo message"
+	logger.Warn("Warning message") // "MyApp, WARN:\nWarning message"
+	logger.Error("Error message") // "MyApp, ERROR:\nError message"
+
+	labels := tglog.LevelLabels{
+		Debug: "dbg", Info: "inf", Warn: "wrn", Error: "err",
+	}
+	// Set not default labels for different log levels
+	logger.SetLabels(&labels)
+	logger.Debug("Debug message") // "MyApp, dbg\nDebug message"
 }
 ```
