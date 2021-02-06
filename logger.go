@@ -14,26 +14,26 @@ type LevelLabels struct {
 }
 
 // TgLogger allows to send logs into chat with telegram bot
-// todo: use array of chatId
+// todo: use array of chatIdList
 type TgLogger struct {
-	TgBot  *tgbotapi.BotAPI
-	chatId int64
-	levels *LevelLabels
-	name   string
-	level  string
+	TgBot      *tgbotapi.BotAPI
+	chatIdList []int64
+	levels     *LevelLabels
+	name       string
+	level      string
 }
 
 // NewLogger creates new TgLogger
-func NewLogger(level string, tgToken string, tgChatId int64) (*TgLogger, error) {
+func NewLogger(level string, tgToken string, tgChatIds []int64) (*TgLogger, error) {
 	tgBot, err := tgbotapi.NewBotAPI(tgToken)
 	if err != nil {
 		return nil, err
 	}
 
 	return &TgLogger{
-		TgBot:  tgBot,
-		chatId: tgChatId,
-		level:  level,
+		TgBot:      tgBot,
+		chatIdList: tgChatIds,
+		level:      level,
 		levels: &LevelLabels{
 			debug: "DEBUG:",
 			info:  "INFO:",
@@ -49,14 +49,18 @@ func (logger *TgLogger) SetName(name string) {
 }
 
 // send sends message. Can return error
-// todo: handle array of chatId in loop
+// todo: handle array of chatIdList in loop
 func (logger *TgLogger) send(msg string) error {
 	var err error
 	if logger.name != "" {
 		msg = fmt.Sprintf("%v, %v", logger.name, msg)
 	}
-	tgMsg := tgbotapi.NewMessage(logger.chatId, msg)
-	_, err = logger.TgBot.Send(tgMsg)
+	// todo: send simultaneously (goroutines)
+	for _, id := range logger.chatIdList {
+		tgMsg := tgbotapi.NewMessage(id, msg)
+		_, err = logger.TgBot.Send(tgMsg)
+	}
+	// todo: wait for all goroutines
 	return err
 }
 

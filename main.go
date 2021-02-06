@@ -19,7 +19,7 @@ func main() {
 	tgChatId := os.Getenv("TELEGRAM_LOG_BOT_CHAT_ID")
 	tgChatIdInt, _ := strconv.ParseInt(tgChatId, 10, 64)
 
-	tgLogger, err := NewLogger("debug", tgToken, tgChatIdInt)
+	tgLogger, err := NewLogger("debug", tgToken, []int64{tgChatIdInt})
 	if err != nil {
 		log.Fatalf("error creating telegram connection: %v\n", err)
 	}
