@@ -11,10 +11,10 @@ import tglog "github.com/quirel/telegram-logger"
 
 func main() {
 	token := "YOUR_TELEGRAM_BOT_TOKEN"
-	var chatId int64 = 123123
+	chatIds := []int64{123123, 456456}
 
 	// creates logger with level 'debug'
-	logger, _ := tglog.NewLogger("debug", token, []int64{chatId})
+	logger, _ := tglog.NewLogger("debug", token, chatIds)
 	// set name displayed in logs
 	logger.SetName("MyApp")
 	
