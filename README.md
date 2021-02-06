@@ -1,6 +1,16 @@
 # Telegram logger
 
-Logger to send message in telegram chats.
+Logger to send message in telegram chats.  
+Package created for some log notification for **pet/small projects**.  
+It's not suitable for something like access.log on highloaded projects.
+
+
+## Features
+- Send messages to multiple chats
+- Set log level: debug | info | warn | error
+- Set custom labels for different levels
+- Set app_name, which will be displayed in a message  
+  (when use same chat for logs from different apps)
 
 ## Example
 

@@ -1,5 +1,6 @@
-// Package provides primitives for sending logs
-// into telegram chat
+// Package to send message in telegram chats.
+// Package created for some log notification for pet/small projects.
+// It's not suitable for something like access.log on highloaded projects.
 package tglogger
 
 import (
