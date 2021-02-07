@@ -39,10 +39,10 @@ func NewLogger(level string, tgToken string, tgChatIds []int64) (*TgLogger, erro
 		ChatIdList: tgChatIds,
 		Level:      level,
 		Labels: &LevelLabels{
-			Debug: "DEBUG:",
-			Info:  "INFO:",
-			Warn:  "WARN:",
-			Error: "ERROR:",
+			Debug: "👾 DEBUG",
+			Info:  "🔵 INFO",
+			Warn:  "⚠️ WARN",
+			Error: "❌ ERROR",
 		},
 	}, nil
 }

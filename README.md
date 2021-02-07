@@ -1,5 +1,7 @@
 # Telegram logger
 
+[![GoDoc](https://pkg.go.dev/badge/github.com/quirel/telegram-logger)](https://pkg.go.dev/github.com/quirel/telegram-logger)
+
 Logger to send message in telegram chats.  
 Package created for some log notification for **pet/small projects**.  
 It's not suitable for something like access.log on highloaded projects.
