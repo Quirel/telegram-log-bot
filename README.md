@@ -30,10 +30,10 @@ func main() {
 	// set name displayed in logs
 	logger.SetName("MyApp")
 	
-	logger.Debug("Debug message") // "MyApp, DEBUG:\nDebug message"
-	logger.Info("Info message") // "MyApp, INFO:\nInfo message"
-	logger.Warn("Warning message") // "MyApp, WARN:\nWarning message"
-	logger.Error("Error message") // "MyApp, ERROR:\nError message"
+	logger.Debug("Debug message") // "MyApp, 👾 DEBUG\nDebug message"
+	logger.Info("Info message") // "MyApp, 🔵 INFO\nInfo message"
+	logger.Warn("Warning message") // "MyApp, ⚠️ WARN\nWarning message"
+	logger.Error("Error message") // "MyApp, ❌ ERROR\nError message"
 
 	labels := tglog.LevelLabels{
 		Debug: "dbg", Info: "inf", Warn: "wrn", Error: "err",
